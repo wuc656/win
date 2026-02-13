@@ -9,6 +9,7 @@ require (
 )
 
 require (
+	github.com/wuc656/wingoes v0.0.1 // indirect
 	golang.org/x/mod v0.33.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/telemetry v0.0.0-20260209163413-e7419c687ee4 // indirect
