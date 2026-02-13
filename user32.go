@@ -911,8 +911,9 @@ const (
 	INDEXID_OBJECT    = 0
 	INDEXID_CONTAINER = 0
 
-	OBJID_WINDOW            = int32(0x00000000)
-	OBJID_SYSMENU           = int32(-((0xFFFFFFFF ^ 0xFFFFFFFF) + 1))
+	OBJID_WINDOW = int32(0x00000000)
+	// OBJID_SYSMENU           = int32(-((0xFFFFFFFF ^ 0xFFFFFFFF) + 1))
+	OBJID_SYSMENU           = int32(-1)
 	OBJID_TITLEBAR          = int32(-((0xFFFFFFFE ^ 0xFFFFFFFF) + 1))
 	OBJID_MENU              = int32(-((0xFFFFFFFD ^ 0xFFFFFFFF) + 1))
 	OBJID_CLIENT            = int32(-((0xFFFFFFFC ^ 0xFFFFFFFF) + 1))

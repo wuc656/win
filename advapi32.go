@@ -2,14 +2,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build windows
 // +build windows
 
 package win
 
 import (
-	"golang.org/x/sys/windows"
 	"syscall"
 	"unsafe"
+
+	"golang.org/x/sys/windows"
 )
 
 const KEY_READ REGSAM = 0x20019
@@ -36,9 +38,11 @@ type (
 )
 
 const (
-	REG_NONE      uint64 = 0 // No value type
-	REG_SZ               = 1 // Unicode nul terminated string
-	REG_EXPAND_SZ        = 2 // Unicode nul terminated string
+	REG_NONE uint64 = 0 // No value type
+	// REG_SZ               = 1 // Unicode nul terminated string
+	REG_SZ uint64 = 1 // Unicode nul terminated string
+	// REG_EXPAND_SZ        = 2 // Unicode nul terminated string
+	REG_EXPAND_SZ uint64 = 2 // Unicode nul terminated string
 	// (with environment variable references)
 	REG_BINARY                     = 3 // Free form binary
 	REG_DWORD                      = 4 // 32-bit number

@@ -222,7 +222,7 @@ func (v *VARIANT) MustLong() int32 {
 
 func (v *VARIANT) Long() (int32, error) {
 	if v.Vt != VT_I4 {
-		return 0, fmt.Errorf("Error: Long() v.Vt !=  VT_I4, ptr=%p, value=%+v", v, v)
+		return 0, fmt.Errorf("error: Long() v.Vt !=  VT_I4, ptr=%p, value=%+v", v, v)
 	}
 	p := (*VAR_I4)(unsafe.Pointer(v))
 	return p.lVal, nil
@@ -244,7 +244,7 @@ func (v *VARIANT) MustULong() uint32 {
 
 func (v *VARIANT) ULong() (uint32, error) {
 	if v.Vt != VT_UI4 {
-		return 0, fmt.Errorf("Error: ULong() v.Vt !=  VT_UI4, ptr=%p, value=%+v", v, v)
+		return 0, fmt.Errorf("error: ULong() v.Vt !=  VT_UI4, ptr=%p, value=%+v", v, v)
 	}
 	p := (*VAR_UI4)(unsafe.Pointer(v))
 	return p.ulVal, nil
@@ -266,7 +266,7 @@ func (v *VARIANT) MustBool() VARIANT_BOOL {
 
 func (v *VARIANT) Bool() (VARIANT_BOOL, error) {
 	if v.Vt != VT_BOOL {
-		return VARIANT_FALSE, fmt.Errorf("Error: Bool() v.Vt !=  VT_BOOL, ptr=%p, value=%+v", v, v)
+		return VARIANT_FALSE, fmt.Errorf("error: Bool() v.Vt !=  VT_BOOL, ptr=%p, value=%+v", v, v)
 	}
 	p := (*VAR_BOOL)(unsafe.Pointer(v))
 	return p.boolVal, nil
@@ -288,7 +288,7 @@ func (v *VARIANT) MustBSTR() *uint16 {
 
 func (v *VARIANT) BSTR() (*uint16, error) {
 	if v.Vt != VT_BSTR {
-		return nil, fmt.Errorf("Error: BSTR() v.Vt !=  VT_BSTR, ptr=%p, value=%+v", v, v)
+		return nil, fmt.Errorf("error: BSTR() v.Vt !=  VT_BSTR, ptr=%p, value=%+v", v, v)
 	}
 	p := (*VAR_BSTR)(unsafe.Pointer(v))
 	return p.bstrVal, nil
@@ -310,7 +310,7 @@ func (v *VARIANT) MustPDispatch() *IDispatch {
 
 func (v *VARIANT) PDispatch() (*IDispatch, error) {
 	if v.Vt != VT_DISPATCH {
-		return nil, fmt.Errorf("Error: PDispatch() v.Vt !=  VT_DISPATCH, ptr=%p, value=%+v", v, v)
+		return nil, fmt.Errorf("error: PDispatch() v.Vt !=  VT_DISPATCH, ptr=%p, value=%+v", v, v)
 	}
 	p := (*VAR_PDISP)(unsafe.Pointer(v))
 	return p.pdispVal, nil
@@ -332,7 +332,7 @@ func (v *VARIANT) MustPVariant() *VARIANT {
 
 func (v *VARIANT) PVariant() (*VARIANT, error) {
 	if v.Vt != VT_BYREF|VT_VARIANT {
-		return nil, fmt.Errorf("Error: PVariant() v.Vt !=  VT_BYREF|VT_VARIANT, ptr=%p, value=%+v", v, v)
+		return nil, fmt.Errorf("error: PVariant() v.Vt !=  VT_BYREF|VT_VARIANT, ptr=%p, value=%+v", v, v)
 	}
 	p := (*VAR_PVAR)(unsafe.Pointer(v))
 	return p.pvarVal, nil
@@ -354,7 +354,7 @@ func (v *VARIANT) MustPBool() *VARIANT_BOOL {
 
 func (v *VARIANT) PBool() (*VARIANT_BOOL, error) {
 	if v.Vt != VT_BYREF|VT_BOOL {
-		return nil, fmt.Errorf("Error: PBool() v.Vt !=  VT_BYREF|VT_BOOL, ptr=%p, value=%+v", v, v)
+		return nil, fmt.Errorf("error: PBool() v.Vt !=  VT_BYREF|VT_BOOL, ptr=%p, value=%+v", v, v)
 	}
 	p := (*VAR_PBOOL)(unsafe.Pointer(v))
 	return p.pboolVal, nil
@@ -398,7 +398,7 @@ func (v *VARIANT) MustPSafeArray() *SAFEARRAY {
 
 func (v *VARIANT) PSafeArray() (*SAFEARRAY, error) {
 	if (v.Vt & VT_ARRAY) != VT_ARRAY {
-		return nil, fmt.Errorf("Error: PSafeArray() (v.Vt & VT_ARRAY) != VT_ARRAY, ptr=%p, value=%+v", v, v)
+		return nil, fmt.Errorf("error: PSafeArray() (v.Vt & VT_ARRAY) != VT_ARRAY, ptr=%p, value=%+v", v, v)
 	}
 	p := (*VAR_PSAFEARRAY)(unsafe.Pointer(v))
 	return p.parray, nil

@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build windows
 // +build windows
 
 package win
@@ -68,12 +69,17 @@ const (
 type TEXTMODE int32
 
 const (
-	TM_PLAINTEXT       TEXTMODE = 1
-	TM_RICHTEXT                 = 2 // Default behavior
-	TM_SINGLELEVELUNDO          = 4
-	TM_MULTILEVELUNDO           = 8 // Default behavior
-	TM_SINGLECODEPAGE           = 16
-	TM_MULTICODEPAGE            = 32 // Default behavior
+	TM_PLAINTEXT TEXTMODE = 1
+	// TM_RICHTEXT                 = 2 // Default behavior
+	TM_RICHTEXT TEXTMODE = 2 // Default behavior
+	// TM_SINGLELEVELUNDO          = 4
+	TM_SINGLELEVELUNDO TEXTMODE = 4
+	// TM_MULTILEVELUNDO           = 8 // Default behavior
+	TM_MULTILEVELUNDO TEXTMODE = 8 // Default behavior
+	// TM_SINGLECODEPAGE           = 16
+	TM_SINGLECODEPAGE TEXTMODE = 16
+	// TM_MULTICODEPAGE            = 32 // Default behavior
+	TM_MULTICODEPAGE TEXTMODE = 32 // Default behavior
 )
 
 const (
@@ -1152,13 +1158,19 @@ type REPASTESPECIAL struct {
 type UNDONAMEID int32
 
 const (
-	UID_UNKNOWN   UNDONAMEID = 0
-	UID_TYPING               = 1
-	UID_DELETE               = 2
-	UID_DRAGDROP             = 3
-	UID_CUT                  = 4
-	UID_PASTE                = 5
-	UID_AUTOTABLE            = 6
+	UID_UNKNOWN UNDONAMEID = 0
+	// UID_TYPING               = 1
+	UID_TYPING UNDONAMEID = 1
+	// UID_DELETE               = 2
+	UID_DELETE UNDONAMEID = 2
+	// UID_DRAGDROP             = 3
+	UID_DRAGDROP UNDONAMEID = 3
+	// UID_CUT                  = 4
+	UID_CUT UNDONAMEID = 4
+	// UID_PASTE                = 5
+	UID_PASTE UNDONAMEID = 5
+	// UID_AUTOTABLE            = 6
+	UID_AUTOTABLE UNDONAMEID = 6
 )
 
 const (
