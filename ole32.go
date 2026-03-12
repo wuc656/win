@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build windows
 // +build windows
 
 package win
@@ -93,7 +94,7 @@ func EqualREFIID(a, b REFIID) bool {
 		return false
 	}
 
-	for i := 0; i < 8; i++ {
+	for i := range 8 {
 		if a.Data4[i] != b.Data4[i] {
 			return false
 		}
