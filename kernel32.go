@@ -182,18 +182,15 @@ func init() {
 
 func ActivateActCtx(ctx HANDLE) (uintptr, bool) {
 	var cookie uintptr
-	ret, _, _ := syscall.Syscall(activateActCtx.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(activateActCtx.Addr(),
 		uintptr(ctx),
-		uintptr(unsafe.Pointer(&cookie)),
-		0)
+		uintptr(unsafe.Pointer(&cookie)))
 	return cookie, ret != 0
 }
 
 func CloseHandle(hObject HANDLE) bool {
-	ret, _, _ := syscall.Syscall(closeHandle.Addr(), 1,
-		uintptr(hObject),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(closeHandle.Addr(),
+		uintptr(hObject))
 
 	return ret != 0
 }
@@ -202,26 +199,22 @@ func CreateActCtx(ctx *ACTCTX) HANDLE {
 	if ctx != nil {
 		ctx.size = uint32(unsafe.Sizeof(*ctx))
 	}
-	ret, _, _ := syscall.Syscall(
+	ret, _, _ := syscall.SyscallN(
 		createActCtx.Addr(),
-		1,
-		uintptr(unsafe.Pointer(ctx)),
-		0,
-		0)
+		uintptr(unsafe.Pointer(ctx)))
 	return HANDLE(ret)
 }
 
 func FileTimeToSystemTime(lpFileTime *FILETIME, lpSystemTime *SYSTEMTIME) bool {
-	ret, _, _ := syscall.Syscall(fileTimeToSystemTime.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(fileTimeToSystemTime.Addr(),
 		uintptr(unsafe.Pointer(lpFileTime)),
-		uintptr(unsafe.Pointer(lpSystemTime)),
-		0)
+		uintptr(unsafe.Pointer(lpSystemTime)))
 
 	return ret != 0
 }
 
 func FindResource(hModule HMODULE, lpName, lpType *uint16) HRSRC {
-	ret, _, _ := syscall.Syscall(findResource.Addr(), 3,
+	ret, _, _ := syscall.SyscallN(findResource.Addr(),
 		uintptr(hModule),
 		uintptr(unsafe.Pointer(lpName)),
 		uintptr(unsafe.Pointer(lpType)))
@@ -230,73 +223,58 @@ func FindResource(hModule HMODULE, lpName, lpType *uint16) HRSRC {
 }
 
 func GetConsoleTitle(lpConsoleTitle *uint16, nSize uint32) uint32 {
-	ret, _, _ := syscall.Syscall(getConsoleTitle.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(getConsoleTitle.Addr(),
 		uintptr(unsafe.Pointer(lpConsoleTitle)),
-		uintptr(nSize),
-		0)
+		uintptr(nSize))
 
 	return uint32(ret)
 }
 
 func GetConsoleWindow() HWND {
-	ret, _, _ := syscall.Syscall(getConsoleWindow.Addr(), 0,
-		0,
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(getConsoleWindow.Addr())
 
 	return HWND(ret)
 }
 
 func GetCurrentThreadId() uint32 {
-	ret, _, _ := syscall.Syscall(getCurrentThreadId.Addr(), 0,
-		0,
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(getCurrentThreadId.Addr())
 
 	return uint32(ret)
 }
 
 func GetLastError() uint32 {
-	ret, _, _ := syscall.Syscall(getLastError.Addr(), 0,
-		0,
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(getLastError.Addr())
 
 	return uint32(ret)
 }
 
 func GetLocaleInfo(Locale LCID, LCType LCTYPE, lpLCData *uint16, cchData int32) int32 {
-	ret, _, _ := syscall.Syscall6(getLocaleInfo.Addr(), 4,
+	ret, _, _ := syscall.SyscallN(getLocaleInfo.Addr(),
 		uintptr(Locale),
 		uintptr(LCType),
 		uintptr(unsafe.Pointer(lpLCData)),
-		uintptr(cchData),
-		0,
-		0)
+		uintptr(cchData))
 
 	return int32(ret)
 }
 
 func GetLogicalDriveStrings(nBufferLength uint32, lpBuffer *uint16) uint32 {
-	ret, _, _ := syscall.Syscall(getLogicalDriveStrings.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(getLogicalDriveStrings.Addr(),
 		uintptr(nBufferLength),
-		uintptr(unsafe.Pointer(lpBuffer)),
-		0)
+		uintptr(unsafe.Pointer(lpBuffer)))
 
 	return uint32(ret)
 }
 
 func GetModuleHandle(lpModuleName *uint16) HINSTANCE {
-	ret, _, _ := syscall.Syscall(getModuleHandle.Addr(), 1,
-		uintptr(unsafe.Pointer(lpModuleName)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(getModuleHandle.Addr(),
+		uintptr(unsafe.Pointer(lpModuleName)))
 
 	return HINSTANCE(ret)
 }
 
 func GetNumberFormat(Locale LCID, dwFlags uint32, lpValue *uint16, lpFormat *NUMBERFMT, lpNumberStr *uint16, cchNumber int32) int32 {
-	ret, _, _ := syscall.Syscall6(getNumberFormat.Addr(), 6,
+	ret, _, _ := syscall.SyscallN(getNumberFormat.Addr(),
 		uintptr(Locale),
 		uintptr(dwFlags),
 		uintptr(unsafe.Pointer(lpValue)),
@@ -311,30 +289,24 @@ func GetPhysicallyInstalledSystemMemory(totalMemoryInKilobytes *uint64) bool {
 	if getPhysicallyInstalledSystemMemory.Find() != nil {
 		return false
 	}
-	ret, _, _ := syscall.Syscall(getPhysicallyInstalledSystemMemory.Addr(), 1,
-		uintptr(unsafe.Pointer(totalMemoryInKilobytes)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(getPhysicallyInstalledSystemMemory.Addr(),
+		uintptr(unsafe.Pointer(totalMemoryInKilobytes)))
 
 	return ret != 0
 }
 
 func GetProfileString(lpAppName, lpKeyName, lpDefault *uint16, lpReturnedString uintptr, nSize uint32) bool {
-	ret, _, _ := syscall.Syscall6(getProfileString.Addr(), 5,
+	ret, _, _ := syscall.SyscallN(getProfileString.Addr(),
 		uintptr(unsafe.Pointer(lpAppName)),
 		uintptr(unsafe.Pointer(lpKeyName)),
 		uintptr(unsafe.Pointer(lpDefault)),
 		lpReturnedString,
-		uintptr(nSize),
-		0)
+		uintptr(nSize))
 	return ret != 0
 }
 
 func GetThreadLocale() LCID {
-	ret, _, _ := syscall.Syscall(getThreadLocale.Addr(), 0,
-		0,
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(getThreadLocale.Addr())
 
 	return LCID(ret)
 }
@@ -344,67 +316,54 @@ func GetThreadUILanguage() LANGID {
 		return 0
 	}
 
-	ret, _, _ := syscall.Syscall(getThreadUILanguage.Addr(), 0,
-		0,
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(getThreadUILanguage.Addr())
 
 	return LANGID(ret)
 }
 
 func GetVersion() uint32 {
-	ret, _, _ := syscall.Syscall(getVersion.Addr(), 0,
-		0,
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(getVersion.Addr())
 	return uint32(ret)
 }
 
 func GlobalAlloc(uFlags uint32, dwBytes uintptr) HGLOBAL {
-	ret, _, _ := syscall.Syscall(globalAlloc.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(globalAlloc.Addr(),
 		uintptr(uFlags),
-		dwBytes,
-		0)
+		dwBytes)
 
 	return HGLOBAL(ret)
 }
 
 func GlobalFree(hMem HGLOBAL) HGLOBAL {
-	ret, _, _ := syscall.Syscall(globalFree.Addr(), 1,
-		uintptr(hMem),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(globalFree.Addr(),
+		uintptr(hMem))
 
 	return HGLOBAL(ret)
 }
 
 func GlobalLock(hMem HGLOBAL) unsafe.Pointer {
-	ret, _, _ := syscall.Syscall(globalLock.Addr(), 1,
-		uintptr(hMem),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(globalLock.Addr(),
+		uintptr(hMem))
 
 	return unsafe.Pointer(ret)
 }
 
 func GlobalUnlock(hMem HGLOBAL) bool {
-	ret, _, _ := syscall.Syscall(globalUnlock.Addr(), 1,
-		uintptr(hMem),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(globalUnlock.Addr(),
+		uintptr(hMem))
 
 	return ret != 0
 }
 
 func MoveMemory(destination, source unsafe.Pointer, length uintptr) {
-	syscall.Syscall(moveMemory.Addr(), 3,
+	syscall.SyscallN(moveMemory.Addr(),
 		uintptr(unsafe.Pointer(destination)),
 		uintptr(source),
 		uintptr(length))
 }
 
 func MulDiv(nNumber, nNumerator, nDenominator int32) int32 {
-	ret, _, _ := syscall.Syscall(mulDiv.Addr(), 3,
+	ret, _, _ := syscall.SyscallN(mulDiv.Addr(),
 		uintptr(nNumber),
 		uintptr(nNumerator),
 		uintptr(nDenominator))
@@ -413,44 +372,37 @@ func MulDiv(nNumber, nNumerator, nDenominator int32) int32 {
 }
 
 func LoadResource(hModule HMODULE, hResInfo HRSRC) HGLOBAL {
-	ret, _, _ := syscall.Syscall(loadResource.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(loadResource.Addr(),
 		uintptr(hModule),
-		uintptr(hResInfo),
-		0)
+		uintptr(hResInfo))
 
 	return HGLOBAL(ret)
 }
 
 func LockResource(hResData HGLOBAL) uintptr {
-	ret, _, _ := syscall.Syscall(lockResource.Addr(), 1,
-		uintptr(hResData),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(lockResource.Addr(),
+		uintptr(hResData))
 
 	return ret
 }
 
 func SetLastError(dwErrorCode uint32) {
-	syscall.Syscall(setLastError.Addr(), 1,
-		uintptr(dwErrorCode),
-		0,
-		0)
+	syscall.SyscallN(setLastError.Addr(),
+		uintptr(dwErrorCode))
 }
 
 func SizeofResource(hModule HMODULE, hResInfo HRSRC) uint32 {
-	ret, _, _ := syscall.Syscall(sizeofResource.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(sizeofResource.Addr(),
 		uintptr(hModule),
-		uintptr(hResInfo),
-		0)
+		uintptr(hResInfo))
 
 	return uint32(ret)
 }
 
 func SystemTimeToFileTime(lpSystemTime *SYSTEMTIME, lpFileTime *FILETIME) bool {
-	ret, _, _ := syscall.Syscall(systemTimeToFileTime.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(systemTimeToFileTime.Addr(),
 		uintptr(unsafe.Pointer(lpSystemTime)),
-		uintptr(unsafe.Pointer(lpFileTime)),
-		0)
+		uintptr(unsafe.Pointer(lpFileTime)))
 
 	return ret != 0
 }

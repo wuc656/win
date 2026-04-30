@@ -255,46 +255,35 @@ func init() {
 }
 
 func ChooseColor(lpcc *CHOOSECOLOR) bool {
-	ret, _, _ := syscall.Syscall(chooseColor.Addr(), 1,
-		uintptr(unsafe.Pointer(lpcc)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(chooseColor.Addr(),
+		uintptr(unsafe.Pointer(lpcc)))
 
 	return ret != 0
 }
 
 func CommDlgExtendedError() uint32 {
-	ret, _, _ := syscall.Syscall(commDlgExtendedError.Addr(), 0,
-		0,
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(commDlgExtendedError.Addr())
 
 	return uint32(ret)
 }
 
 func GetOpenFileName(lpofn *OPENFILENAME) bool {
-	ret, _, _ := syscall.Syscall(getOpenFileName.Addr(), 1,
-		uintptr(unsafe.Pointer(lpofn)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(getOpenFileName.Addr(),
+		uintptr(unsafe.Pointer(lpofn)))
 
 	return ret != 0
 }
 
 func GetSaveFileName(lpofn *OPENFILENAME) bool {
-	ret, _, _ := syscall.Syscall(getSaveFileName.Addr(), 1,
-		uintptr(unsafe.Pointer(lpofn)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(getSaveFileName.Addr(),
+		uintptr(unsafe.Pointer(lpofn)))
 
 	return ret != 0
 }
 
 func PrintDlgEx(lppd *PRINTDLGEX) HRESULT {
-	ret, _, _ := syscall.Syscall(printDlgEx.Addr(), 1,
-		uintptr(unsafe.Pointer(lppd)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(printDlgEx.Addr(),
+		uintptr(unsafe.Pointer(lppd)))
 
 	return HRESULT(ret)
 }

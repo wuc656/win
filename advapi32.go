@@ -83,28 +83,25 @@ func init() {
 }
 
 func RegCloseKey(hKey HKEY) int32 {
-	ret, _, _ := syscall.Syscall(regCloseKey.Addr(), 1,
-		uintptr(hKey),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(regCloseKey.Addr(),
+		uintptr(hKey))
 
 	return int32(ret)
 }
 
 func RegOpenKeyEx(hKey HKEY, lpSubKey *uint16, ulOptions uint32, samDesired REGSAM, phkResult *HKEY) int32 {
-	ret, _, _ := syscall.Syscall6(regOpenKeyEx.Addr(), 5,
+	ret, _, _ := syscall.SyscallN(regOpenKeyEx.Addr(),
 		uintptr(hKey),
 		uintptr(unsafe.Pointer(lpSubKey)),
 		uintptr(ulOptions),
 		uintptr(samDesired),
-		uintptr(unsafe.Pointer(phkResult)),
-		0)
+		uintptr(unsafe.Pointer(phkResult)))
 
 	return int32(ret)
 }
 
 func RegQueryValueEx(hKey HKEY, lpValueName *uint16, lpReserved, lpType *uint32, lpData *byte, lpcbData *uint32) int32 {
-	ret, _, _ := syscall.Syscall6(regQueryValueEx.Addr(), 6,
+	ret, _, _ := syscall.SyscallN(regQueryValueEx.Addr(),
 		uintptr(hKey),
 		uintptr(unsafe.Pointer(lpValueName)),
 		uintptr(unsafe.Pointer(lpReserved)),
@@ -116,7 +113,7 @@ func RegQueryValueEx(hKey HKEY, lpValueName *uint16, lpReserved, lpType *uint32,
 }
 
 func RegEnumValue(hKey HKEY, index uint32, lpValueName *uint16, lpcchValueName *uint32, lpReserved, lpType *uint32, lpData *byte, lpcbData *uint32) int32 {
-	ret, _, _ := syscall.Syscall9(regEnumValue.Addr(), 8,
+	ret, _, _ := syscall.SyscallN(regEnumValue.Addr(),
 		uintptr(hKey),
 		uintptr(index),
 		uintptr(unsafe.Pointer(lpValueName)),
@@ -124,13 +121,12 @@ func RegEnumValue(hKey HKEY, index uint32, lpValueName *uint16, lpcchValueName *
 		uintptr(unsafe.Pointer(lpReserved)),
 		uintptr(unsafe.Pointer(lpType)),
 		uintptr(unsafe.Pointer(lpData)),
-		uintptr(unsafe.Pointer(lpcbData)),
-		0)
+		uintptr(unsafe.Pointer(lpcbData)))
 	return int32(ret)
 }
 
 func RegSetValueEx(hKey HKEY, lpValueName *uint16, lpReserved, lpDataType uint64, lpData *byte, cbData uint32) int32 {
-	ret, _, _ := syscall.Syscall6(regSetValueEx.Addr(), 6,
+	ret, _, _ := syscall.SyscallN(regSetValueEx.Addr(),
 		uintptr(hKey),
 		uintptr(unsafe.Pointer(lpValueName)),
 		uintptr(lpReserved),

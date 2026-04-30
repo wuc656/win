@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build windows
 // +build windows
 
 package win
@@ -57,7 +58,7 @@ type ITypeInfo struct {
 }
 
 func (obj *ITypeInfo) QueryInterface(riid REFIID, ppvObject *unsafe.Pointer) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.QueryInterface, 3,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.QueryInterface,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(unsafe.Pointer(riid)),
 		uintptr(unsafe.Pointer(ppvObject)))
@@ -65,17 +66,13 @@ func (obj *ITypeInfo) QueryInterface(riid REFIID, ppvObject *unsafe.Pointer) HRE
 }
 
 func (obj *ITypeInfo) AddRef() uint32 {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.AddRef, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.AddRef,
+		uintptr(unsafe.Pointer(obj)))
 	return uint32(ret)
 }
 
 func (obj *ITypeInfo) Release() uint32 {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.Release, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.Release,
+		uintptr(unsafe.Pointer(obj)))
 	return uint32(ret)
 }
