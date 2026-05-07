@@ -12,13 +12,11 @@ import (
 )
 
 func (obj *ITaskbarList3) SetProgressValue(hwnd HWND, current uint32, length uint32) HRESULT {
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.SetProgressValue, 6,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetProgressValue,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hwnd),
 		uintptr(current),
-		0,
-		uintptr(length),
-		0)
+		uintptr(length))
 
 	return HRESULT(ret)
 }

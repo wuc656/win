@@ -394,35 +394,30 @@ func init() {
 }
 
 func DragAcceptFiles(hWnd HWND, fAccept bool) bool {
-	ret, _, _ := syscall.Syscall(dragAcceptFiles.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(dragAcceptFiles.Addr(),
 		uintptr(hWnd),
-		uintptr(BoolToBOOL(fAccept)),
-		0)
+		uintptr(BoolToBOOL(fAccept)))
 
 	return ret != 0
 }
 
 func DragQueryFile(hDrop HDROP, iFile uint, lpszFile *uint16, cch uint) uint {
-	ret, _, _ := syscall.Syscall6(dragQueryFile.Addr(), 4,
+	ret, _, _ := syscall.SyscallN(dragQueryFile.Addr(),
 		uintptr(hDrop),
 		uintptr(iFile),
 		uintptr(unsafe.Pointer(lpszFile)),
-		uintptr(cch),
-		0,
-		0)
+		uintptr(cch))
 
 	return uint(ret)
 }
 
 func DragFinish(hDrop HDROP) {
-	syscall.Syscall(dragAcceptFiles.Addr(), 1,
-		uintptr(hDrop),
-		0,
-		0)
+	syscall.SyscallN(dragFinish.Addr(),
+		uintptr(hDrop))
 }
 
 func ExtractIcon(hInst HINSTANCE, exeFileName *uint16, iconIndex int32) HICON {
-	ret, _, _ := syscall.Syscall(extractIcon.Addr(), 3,
+	ret, _, _ := syscall.SyscallN(extractIcon.Addr(),
 		uintptr(hInst),
 		uintptr(unsafe.Pointer(exeFileName)),
 		uintptr(iconIndex))
@@ -431,25 +426,22 @@ func ExtractIcon(hInst HINSTANCE, exeFileName *uint16, iconIndex int32) HICON {
 }
 
 func SHAppBarMessage(dwMessage uint32, pData *APPBARDATA) uintptr {
-	ret, _, _ := syscall.Syscall(shAppBarMessage.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(shAppBarMessage.Addr(),
 		uintptr(dwMessage),
-		uintptr(unsafe.Pointer(pData)),
-		0)
+		uintptr(unsafe.Pointer(pData)))
 
 	return ret
 }
 
 func SHBrowseForFolder(lpbi *BROWSEINFO) uintptr {
-	ret, _, _ := syscall.Syscall(shBrowseForFolder.Addr(), 1,
-		uintptr(unsafe.Pointer(lpbi)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(shBrowseForFolder.Addr(),
+		uintptr(unsafe.Pointer(lpbi)))
 
 	return ret
 }
 
 func SHDefExtractIcon(pszIconFile *uint16, iIndex int32, uFlags uint32, phiconLarge, phiconSmall *HICON, nIconSize uint32) HRESULT {
-	ret, _, _ := syscall.Syscall6(shDefExtractIcon.Addr(), 6,
+	ret, _, _ := syscall.SyscallN(shDefExtractIcon.Addr(),
 		uintptr(unsafe.Pointer(pszIconFile)),
 		uintptr(iIndex),
 		uintptr(uFlags),
@@ -461,46 +453,41 @@ func SHDefExtractIcon(pszIconFile *uint16, iIndex int32, uFlags uint32, phiconLa
 }
 
 func SHGetFileInfo(pszPath *uint16, dwFileAttributes uint32, psfi *SHFILEINFO, cbFileInfo, uFlags uint32) uintptr {
-	ret, _, _ := syscall.Syscall6(shGetFileInfo.Addr(), 5,
+	ret, _, _ := syscall.SyscallN(shGetFileInfo.Addr(),
 		uintptr(unsafe.Pointer(pszPath)),
 		uintptr(dwFileAttributes),
 		uintptr(unsafe.Pointer(psfi)),
 		uintptr(cbFileInfo),
-		uintptr(uFlags),
-		0)
+		uintptr(uFlags))
 
 	return ret
 }
 
 func SHGetPathFromIDList(pidl uintptr, pszPath *uint16) bool {
-	ret, _, _ := syscall.Syscall(shGetPathFromIDList.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(shGetPathFromIDList.Addr(),
 		pidl,
-		uintptr(unsafe.Pointer(pszPath)),
-		0)
+		uintptr(unsafe.Pointer(pszPath)))
 
 	return ret != 0
 }
 
 func SHGetSpecialFolderPath(hwndOwner HWND, lpszPath *uint16, csidl CSIDL, fCreate bool) bool {
-	ret, _, _ := syscall.Syscall6(shGetSpecialFolderPath.Addr(), 4,
+	ret, _, _ := syscall.SyscallN(shGetSpecialFolderPath.Addr(),
 		uintptr(hwndOwner),
 		uintptr(unsafe.Pointer(lpszPath)),
 		uintptr(csidl),
-		uintptr(BoolToBOOL(fCreate)),
-		0,
-		0)
+		uintptr(BoolToBOOL(fCreate)))
 
 	return ret != 0
 }
 
 func SHParseDisplayName(pszName *uint16, pbc uintptr, ppidl *uintptr, sfgaoIn uint32, psfgaoOut *uint32) HRESULT {
-	ret, _, _ := syscall.Syscall6(shParseDisplayName.Addr(), 5,
+	ret, _, _ := syscall.SyscallN(shParseDisplayName.Addr(),
 		uintptr(unsafe.Pointer(pszName)),
 		pbc,
 		uintptr(unsafe.Pointer(ppidl)),
-		0,
-		uintptr(unsafe.Pointer(psfgaoOut)),
-		0)
+		uintptr(sfgaoIn),
+		uintptr(unsafe.Pointer(psfgaoOut)))
 
 	return HRESULT(ret)
 }
@@ -509,34 +496,28 @@ func SHGetStockIconInfo(stockIconId int32, uFlags uint32, stockIcon *SHSTOCKICON
 	if shGetStockIconInfo.Find() != nil {
 		return HRESULT(0)
 	}
-	ret, _, _ := syscall.Syscall6(shGetStockIconInfo.Addr(), 3,
+	ret, _, _ := syscall.SyscallN(shGetStockIconInfo.Addr(),
 		uintptr(stockIconId),
 		uintptr(uFlags),
-		uintptr(unsafe.Pointer(stockIcon)),
-		0,
-		0,
-		0,
-	)
+		uintptr(unsafe.Pointer(stockIcon)))
 	return HRESULT(ret)
 }
 
 func ShellExecute(hWnd HWND, verb *uint16, file *uint16, args *uint16, cwd *uint16, showCmd int) bool {
-	ret, _, _ := syscall.Syscall6(shellExecute.Addr(), 6,
+	ret, _, _ := syscall.SyscallN(shellExecute.Addr(),
 		uintptr(hWnd),
 		uintptr(unsafe.Pointer(verb)),
 		uintptr(unsafe.Pointer(file)),
 		uintptr(unsafe.Pointer(args)),
 		uintptr(unsafe.Pointer(cwd)),
-		uintptr(showCmd),
-	)
+		uintptr(showCmd))
 	return ret != 0
 }
 
 func Shell_NotifyIcon(dwMessage uint32, lpdata *NOTIFYICONDATA) bool {
-	ret, _, _ := syscall.Syscall(shell_NotifyIcon.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(shell_NotifyIcon.Addr(),
 		uintptr(dwMessage),
-		uintptr(unsafe.Pointer(lpdata)),
-		0)
+		uintptr(unsafe.Pointer(lpdata)))
 
 	return int32(ret) != 0
 }

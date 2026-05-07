@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build (windows && 386) || (windows && arm)
 // +build windows,386 windows,arm
 
 package win
@@ -15,7 +16,7 @@ func (idProp *MSAAPROPID) split() (uintptr, uintptr, uintptr, uintptr) {
 	if idProp == nil {
 		return 0, 0, 0, 0
 	}
-	x := (*struct { a, b, c, d uintptr })(unsafe.Pointer(idProp))
+	x := (*struct{ a, b, c, d uintptr })(unsafe.Pointer(idProp))
 	return x.a, x.b, x.c, x.d
 }
 
@@ -28,20 +29,19 @@ func (obj *IAccPropServices) SetPropValue(idString []byte, idProp *MSAAPROPID, v
 		idStringPtr = unsafe.Pointer(&idString[0])
 	}
 	propA, propB, propC, propD := idProp.split()
-	ret, _, _ := syscall.Syscall9(obj.LpVtbl.SetPropValue, 8,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetPropValue,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(idStringPtr),
 		uintptr(idStringLen),
 		propA, propB, propC, propD,
-		uintptr(unsafe.Pointer(v)),
-		0)
+		uintptr(unsafe.Pointer(v)))
 	return HRESULT(ret)
 }
 
 // SetHwndProp wraps SetPropValue, providing a convenient entry point for callers who are annotating HWND-based accessible elements. If the new value is a string, you can use SetHwndPropStr instead.
 func (obj *IAccPropServices) SetHwndProp(hwnd HWND, idObject int32, idChild uint32, idProp *MSAAPROPID, v *VARIANT) HRESULT {
 	propA, propB, propC, propD := idProp.split()
-	ret, _, _ := syscall.Syscall9(obj.LpVtbl.SetHwndProp, 9,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetHwndProp,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hwnd),
 		uintptr(idObject),
@@ -58,7 +58,7 @@ func (obj *IAccPropServices) SetHwndPropStr(hwnd HWND, idObject int32, idChild u
 		return -((E_INVALIDARG ^ 0xFFFFFFFF) + 1)
 	}
 	propA, propB, propC, propD := idProp.split()
-	ret, _, _ := syscall.Syscall9(obj.LpVtbl.SetHwndPropStr, 9,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetHwndPropStr,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hwnd),
 		uintptr(idObject),
@@ -71,13 +71,12 @@ func (obj *IAccPropServices) SetHwndPropStr(hwnd HWND, idObject int32, idChild u
 // SetHmenuProp wraps SetPropValue, providing a convenient entry point for callers who are annotating HMENU-based accessible elements. If the new value is a string, you can use IAccPropServices::SetHmenuPropStr instead.
 func (obj *IAccPropServices) SetHmenuProp(hmenu HMENU, idChild uint32, idProp *MSAAPROPID, v *VARIANT) HRESULT {
 	propA, propB, propC, propD := idProp.split()
-	ret, _, _ := syscall.Syscall9(obj.LpVtbl.SetHmenuProp, 8,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetHmenuProp,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hmenu),
 		uintptr(idChild),
 		propA, propB, propC, propD,
-		uintptr(unsafe.Pointer(v)),
-		0)
+		uintptr(unsafe.Pointer(v)))
 	return HRESULT(ret)
 }
 
@@ -88,12 +87,11 @@ func (obj *IAccPropServices) SetHmenuPropStr(hmenu HMENU, idChild uint32, idProp
 		return -((E_INVALIDARG ^ 0xFFFFFFFF) + 1)
 	}
 	propA, propB, propC, propD := idProp.split()
-	ret, _, _ := syscall.Syscall9(obj.LpVtbl.SetHmenuPropStr, 8,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetHmenuPropStr,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hmenu),
 		uintptr(idChild),
 		propA, propB, propC, propD,
-		uintptr(unsafe.Pointer(str16)),
-		0)
+		uintptr(unsafe.Pointer(str16)))
 	return HRESULT(ret)
 }

@@ -2,14 +2,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build windows
 // +build windows
 
 package win
 
 import (
-	"golang.org/x/sys/windows"
 	"syscall"
 	"unsafe"
+
+	"golang.org/x/sys/windows"
 )
 
 // EnumPrinters flags
@@ -53,19 +55,18 @@ func init() {
 }
 
 func DeviceCapabilities(pDevice, pPort *uint16, fwCapability uint16, pOutput *uint16, pDevMode *DEVMODE) uint32 {
-	ret, _, _ := syscall.Syscall6(deviceCapabilities.Addr(), 5,
+	ret, _, _ := syscall.SyscallN(deviceCapabilities.Addr(),
 		uintptr(unsafe.Pointer(pDevice)),
 		uintptr(unsafe.Pointer(pPort)),
 		uintptr(fwCapability),
 		uintptr(unsafe.Pointer(pOutput)),
-		uintptr(unsafe.Pointer(pDevMode)),
-		0)
+		uintptr(unsafe.Pointer(pDevMode)))
 
 	return uint32(ret)
 }
 
 func DocumentProperties(hWnd HWND, hPrinter HANDLE, pDeviceName *uint16, pDevModeOutput, pDevModeInput *DEVMODE, fMode uint32) int32 {
-	ret, _, _ := syscall.Syscall6(documentProperties.Addr(), 6,
+	ret, _, _ := syscall.SyscallN(documentProperties.Addr(),
 		uintptr(hWnd),
 		uintptr(hPrinter),
 		uintptr(unsafe.Pointer(pDeviceName)),
@@ -76,26 +77,23 @@ func DocumentProperties(hWnd HWND, hPrinter HANDLE, pDeviceName *uint16, pDevMod
 	return int32(ret)
 }
 
-func EnumPrinters(Flags uint32, Name *uint16, Level uint32, pPrinterEnum *byte, cbBuf uint32, pcbNeeded, pcReturned *uint32) bool {
-	ret, _, _ := syscall.Syscall9(enumPrinters.Addr(), 7,
-		uintptr(Flags),
-		uintptr(unsafe.Pointer(Name)),
-		uintptr(Level),
+func EnumPrinters(flags uint32, name *uint16, level uint32, pPrinterEnum *byte, cbBuf uint32, pcbNeeded, pcReturned *uint32) bool {
+	ret, _, _ := syscall.SyscallN(enumPrinters.Addr(),
+		uintptr(flags),
+		uintptr(unsafe.Pointer(name)),
+		uintptr(level),
 		uintptr(unsafe.Pointer(pPrinterEnum)),
 		uintptr(cbBuf),
 		uintptr(unsafe.Pointer(pcbNeeded)),
-		uintptr(unsafe.Pointer(pcReturned)),
-		0,
-		0)
+		uintptr(unsafe.Pointer(pcReturned)))
 
 	return ret != 0
 }
 
 func GetDefaultPrinter(pszBuffer *uint16, pcchBuffer *uint32) bool {
-	ret, _, _ := syscall.Syscall(getDefaultPrinter.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(getDefaultPrinter.Addr(),
 		uintptr(unsafe.Pointer(pszBuffer)),
-		uintptr(unsafe.Pointer(pcchBuffer)),
-		0)
+		uintptr(unsafe.Pointer(pcchBuffer)))
 
 	return ret != 0
 }

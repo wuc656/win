@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build windows
 // +build windows
 
 package win
@@ -756,7 +757,7 @@ type ITextDocument struct {
 }
 
 func (obj *ITextDocument) QueryInterface(riid REFIID, ppvObject *unsafe.Pointer) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.QueryInterface, 3,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.QueryInterface,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(unsafe.Pointer(riid)),
 		uintptr(unsafe.Pointer(ppvObject)))
@@ -764,42 +765,35 @@ func (obj *ITextDocument) QueryInterface(riid REFIID, ppvObject *unsafe.Pointer)
 }
 
 func (obj *ITextDocument) AddRef() uint32 {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.AddRef, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.AddRef,
+		uintptr(unsafe.Pointer(obj)))
 	return uint32(ret)
 }
 
 func (obj *ITextDocument) Release() uint32 {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.Release, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.Release,
+		uintptr(unsafe.Pointer(obj)))
 	return uint32(ret)
 }
 
 func (obj *ITextDocument) GetTypeInfoCount(pctinfo *uint32) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.GetTypeInfoCount, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetTypeInfoCount,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(unsafe.Pointer(pctinfo)),
-		0)
+		uintptr(unsafe.Pointer(pctinfo)))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) GetTypeInfo(iTInfo uint32, lcid LCID, ppTInfo **ITypeInfo) HRESULT {
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.GetTypeInfo, 4,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetTypeInfo,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(iTInfo),
 		uintptr(lcid),
-		uintptr(unsafe.Pointer(ppTInfo)),
-		0,
-		0)
+		uintptr(unsafe.Pointer(ppTInfo)))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) GetIDsOfNames(riid REFIID, rgszNames **uint16, cNames uint32, lcid LCID, rgDispId *DISPID) HRESULT {
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.GetIDsOfNames, 6,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetIDsOfNames,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(unsafe.Pointer(riid)),
 		uintptr(unsafe.Pointer(rgszNames)),
@@ -810,7 +804,7 @@ func (obj *ITextDocument) GetIDsOfNames(riid REFIID, rgszNames **uint16, cNames 
 }
 
 func (obj *ITextDocument) Invoke(dispIdMember DISPID, riid REFIID, lcid LCID, wFlags uint16, pDispParams *DISPPARAMS, pVarResult *VARIANT, pExcepInfo *EXCEPINFO, puArgErr *uint32) HRESULT {
-	ret, _, _ := syscall.Syscall9(obj.LpVtbl.Invoke, 9,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.Invoke,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(dispIdMember),
 		uintptr(unsafe.Pointer(riid)),
@@ -824,134 +818,114 @@ func (obj *ITextDocument) Invoke(dispIdMember DISPID, riid REFIID, lcid LCID, wF
 }
 
 func (obj *ITextDocument) GetName(pName **uint16 /*BSTR*/) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.GetName, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetName,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(unsafe.Pointer(pName)),
-		0)
+		uintptr(unsafe.Pointer(pName)))
 	return HRESULT(ret)
 
 }
 
 func (obj *ITextDocument) GetSelection(ppSel **ITextSelection) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.GetSelection, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetSelection,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(unsafe.Pointer(ppSel)),
-		0)
+		uintptr(unsafe.Pointer(ppSel)))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) GetStoryCount(pCount *int32) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.GetStoryCount, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetStoryCount,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(unsafe.Pointer(pCount)),
-		0)
+		uintptr(unsafe.Pointer(pCount)))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) GetStoryRanges(ppStories **ITextStoryRanges) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.GetStoryRanges, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetStoryRanges,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(unsafe.Pointer(ppStories)),
-		0)
+		uintptr(unsafe.Pointer(ppStories)))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) GetSaved(pValue *int32) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.GetSaved, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetSaved,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(unsafe.Pointer(pValue)),
-		0)
+		uintptr(unsafe.Pointer(pValue)))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) SetSaved(Value int32) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.SetSaved, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetSaved,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(Value),
-		0)
+		uintptr(Value))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) GetDefaultTabStop(pValue *float32) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.GetDefaultTabStop, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetDefaultTabStop,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(unsafe.Pointer(pValue)),
-		0)
+		uintptr(unsafe.Pointer(pValue)))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) SetDefaultTabStop(Value float32) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.SetDefaultTabStop, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetDefaultTabStop,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(Value),
-		0)
+		uintptr(Value))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) New() HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.New, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.New,
+		uintptr(unsafe.Pointer(obj)))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) Open(pVar *VARIANT, Flags int32, CodePage int32) HRESULT {
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.Open, 4,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.Open,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(unsafe.Pointer(pVar)),
 		uintptr(Flags),
-		uintptr(CodePage),
-		0,
-		0)
+		uintptr(CodePage))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) Save(pVar *VARIANT, Flags int32, CodePage int32) HRESULT {
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.Save, 4,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.Save,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(unsafe.Pointer(pVar)),
 		uintptr(Flags),
-		uintptr(CodePage),
-		0,
-		0)
+		uintptr(CodePage))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) Freeze(pCount *int32) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.Freeze, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.Freeze,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(unsafe.Pointer(pCount)),
-		0)
+		uintptr(unsafe.Pointer(pCount)))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) Unfreeze(pCount *int32) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.Freeze, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.Unfreeze,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(unsafe.Pointer(pCount)),
-		0)
+		uintptr(unsafe.Pointer(pCount)))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) BeginEditCollection() HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.BeginEditCollection, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.BeginEditCollection,
+		uintptr(unsafe.Pointer(obj)))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) EndEditCollection() HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.EndEditCollection, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.EndEditCollection,
+		uintptr(unsafe.Pointer(obj)))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) Undo(Count int32, pCount *int32) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.Undo, 3,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.Undo,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(Count),
 		uintptr(unsafe.Pointer(pCount)))
@@ -959,7 +933,7 @@ func (obj *ITextDocument) Undo(Count int32, pCount *int32) HRESULT {
 }
 
 func (obj *ITextDocument) Redo(Count int32, pCount *int32) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.Redo, 3,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.Redo,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(Count),
 		uintptr(unsafe.Pointer(pCount)))
@@ -967,23 +941,19 @@ func (obj *ITextDocument) Redo(Count int32, pCount *int32) HRESULT {
 }
 
 func (obj *ITextDocument) Range(cpActive int32, cpAnchor int32, ppRange **ITextRange) HRESULT {
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.Range, 4,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.Range,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(cpActive),
 		uintptr(cpAnchor),
-		uintptr(unsafe.Pointer(ppRange)),
-		0,
-		0)
+		uintptr(unsafe.Pointer(ppRange)))
 	return HRESULT(ret)
 }
 
 func (obj *ITextDocument) RangeFromPoint(x int32, y int32, ppRange **ITextRange) HRESULT {
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.RangeFromPoint, 4,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.RangeFromPoint,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(x),
 		uintptr(y),
-		uintptr(unsafe.Pointer(ppRange)),
-		0,
-		0)
+		uintptr(unsafe.Pointer(ppRange)))
 	return HRESULT(ret)
 }

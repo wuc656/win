@@ -2,14 +2,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build windows
 // +build windows
 
 package win
 
 import (
-	"golang.org/x/sys/windows"
 	"syscall"
 	"unsafe"
+
+	"golang.org/x/sys/windows"
 )
 
 // for second parameter of WglSwapLayerBuffers
@@ -137,7 +139,7 @@ func init() {
 }
 
 func WglCopyContext(hglrcSrc, hglrcDst HGLRC, mask uint) bool {
-	ret, _, _ := syscall.Syscall(wglCopyContext.Addr(), 3,
+	ret, _, _ := syscall.SyscallN(wglCopyContext.Addr(),
 		uintptr(hglrcSrc),
 		uintptr(hglrcDst),
 		uintptr(mask))
@@ -146,94 +148,78 @@ func WglCopyContext(hglrcSrc, hglrcDst HGLRC, mask uint) bool {
 }
 
 func WglCreateContext(hdc HDC) HGLRC {
-	ret, _, _ := syscall.Syscall(wglCreateContext.Addr(), 1,
-		uintptr(hdc),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(wglCreateContext.Addr(),
+		uintptr(hdc))
 
 	return HGLRC(ret)
 }
 
 func WglCreateLayerContext(hdc HDC, iLayerPlane int) HGLRC {
-	ret, _, _ := syscall.Syscall(wglCreateLayerContext.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(wglCreateLayerContext.Addr(),
 		uintptr(hdc),
-		uintptr(iLayerPlane),
-		0)
+		uintptr(iLayerPlane))
 
 	return HGLRC(ret)
 }
 
 func WglDeleteContext(hglrc HGLRC) bool {
-	ret, _, _ := syscall.Syscall(wglDeleteContext.Addr(), 1,
-		uintptr(hglrc),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(wglDeleteContext.Addr(),
+		uintptr(hglrc))
 
 	return ret != 0
 }
 
 func WglDescribeLayerPlane(hdc HDC, iPixelFormat, iLayerPlane int, nBytes uint8, plpd *LAYERPLANEDESCRIPTOR) bool {
-	ret, _, _ := syscall.Syscall6(wglDescribeLayerPlane.Addr(), 5,
+	ret, _, _ := syscall.SyscallN(wglDescribeLayerPlane.Addr(),
 		uintptr(hdc),
 		uintptr(iPixelFormat),
 		uintptr(iLayerPlane),
 		uintptr(nBytes),
-		uintptr(unsafe.Pointer(plpd)),
-		0)
+		uintptr(unsafe.Pointer(plpd)))
 
 	return ret != 0
 }
 
 func WglGetCurrentContext() HGLRC {
-	ret, _, _ := syscall.Syscall(wglGetCurrentContext.Addr(), 0,
-		0,
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(wglGetCurrentContext.Addr())
 
 	return HGLRC(ret)
 }
 
 func WglGetCurrentDC() HDC {
-	ret, _, _ := syscall.Syscall(wglGetCurrentDC.Addr(), 0,
-		0,
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(wglGetCurrentDC.Addr())
 
 	return HDC(ret)
 }
 
 func WglGetLayerPaletteEntries(hdc HDC, iLayerPlane, iStart, cEntries int, pcr *COLORREF) int {
-	ret, _, _ := syscall.Syscall6(wglGetLayerPaletteEntries.Addr(), 5,
+	ret, _, _ := syscall.SyscallN(wglGetLayerPaletteEntries.Addr(),
 		uintptr(hdc),
 		uintptr(iLayerPlane),
 		uintptr(iStart),
 		uintptr(cEntries),
-		uintptr(unsafe.Pointer(pcr)),
-		0)
+		uintptr(unsafe.Pointer(pcr)))
 
 	return int(ret)
 }
 
 func WglGetProcAddress(lpszProc *byte) uintptr {
-	ret, _, _ := syscall.Syscall(wglGetProcAddress.Addr(), 1,
-		uintptr(unsafe.Pointer(lpszProc)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(wglGetProcAddress.Addr(),
+		uintptr(unsafe.Pointer(lpszProc)))
 
 	return uintptr(ret)
 }
 
 func WglMakeCurrent(hdc HDC, hglrc HGLRC) bool {
-	ret, _, _ := syscall.Syscall(wglMakeCurrent.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(wglMakeCurrent.Addr(),
 		uintptr(hdc),
-		uintptr(hglrc),
-		0)
+		uintptr(hglrc))
 
 	return ret != 0
 }
 
 func WglRealizeLayerPalette(hdc HDC, iLayerPlane int, bRealize bool) bool {
-	ret, _, _ := syscall.Syscall(wglRealizeLayerPalette.Addr(), 3,
+	ret, _, _ := syscall.SyscallN(wglRealizeLayerPalette.Addr(),
 		uintptr(hdc),
 		uintptr(iLayerPlane),
 		uintptr(BoolToBOOL(bRealize)))
@@ -242,49 +228,44 @@ func WglRealizeLayerPalette(hdc HDC, iLayerPlane int, bRealize bool) bool {
 }
 
 func WglSetLayerPaletteEntries(hdc HDC, iLayerPlane, iStart, cEntries int, pcr *COLORREF) int {
-	ret, _, _ := syscall.Syscall6(wglSetLayerPaletteEntries.Addr(), 5,
+	ret, _, _ := syscall.SyscallN(wglSetLayerPaletteEntries.Addr(),
 		uintptr(hdc),
 		uintptr(iLayerPlane),
 		uintptr(iStart),
 		uintptr(cEntries),
-		uintptr(unsafe.Pointer(pcr)),
-		0)
+		uintptr(unsafe.Pointer(pcr)))
 
 	return int(ret)
 }
 
 func WglShareLists(hglrc1, hglrc2 HGLRC) bool {
-	ret, _, _ := syscall.Syscall(wglShareLists.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(wglShareLists.Addr(),
 		uintptr(hglrc1),
-		uintptr(hglrc2),
-		0)
+		uintptr(hglrc2))
 
 	return ret != 0
 }
 
 func WglSwapLayerBuffers(hdc HDC, fuPlanes uint) bool {
-	ret, _, _ := syscall.Syscall(wglSwapLayerBuffers.Addr(), 2,
+	ret, _, _ := syscall.SyscallN(wglSwapLayerBuffers.Addr(),
 		uintptr(hdc),
-		uintptr(fuPlanes),
-		0)
+		uintptr(fuPlanes))
 
 	return ret != 0
 }
 
 func WglUseFontBitmaps(hdc HDC, first, count, listbase uint32) bool {
-	ret, _, _ := syscall.Syscall6(wglUseFontBitmaps.Addr(), 4,
+	ret, _, _ := syscall.SyscallN(wglUseFontBitmaps.Addr(),
 		uintptr(hdc),
 		uintptr(first),
 		uintptr(count),
-		uintptr(listbase),
-		0,
-		0)
+		uintptr(listbase))
 
 	return ret != 0
 }
 
 func WglUseFontOutlines(hdc HDC, first, count, listbase uint32, deviation, extrusion float32, format int, pgmf *GLYPHMETRICSFLOAT) bool {
-	ret, _, _ := syscall.Syscall12(wglUseFontBitmaps.Addr(), 8,
+	ret, _, _ := syscall.SyscallN(wglUseFontOutlines.Addr(),
 		uintptr(hdc),
 		uintptr(first),
 		uintptr(count),
@@ -292,11 +273,7 @@ func WglUseFontOutlines(hdc HDC, first, count, listbase uint32, deviation, extru
 		uintptr(deviation),
 		uintptr(extrusion),
 		uintptr(format),
-		uintptr(unsafe.Pointer(pgmf)),
-		0,
-		0,
-		0,
-		0)
+		uintptr(unsafe.Pointer(pgmf)))
 
 	return ret != 0
 }

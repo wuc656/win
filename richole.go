@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build windows
 // +build windows
 
 package win
@@ -49,7 +50,7 @@ type IRichEditOle struct {
 }
 
 func (obj *IRichEditOle) QueryInterface(riid REFIID, ppvObject *unsafe.Pointer) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.QueryInterface, 3,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.QueryInterface,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(unsafe.Pointer(riid)),
 		uintptr(unsafe.Pointer(ppvObject)))
@@ -57,77 +58,63 @@ func (obj *IRichEditOle) QueryInterface(riid REFIID, ppvObject *unsafe.Pointer) 
 }
 
 func (obj *IRichEditOle) AddRef() uint32 {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.AddRef, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.AddRef,
+		uintptr(unsafe.Pointer(obj)))
 	return uint32(ret)
 }
 
 func (obj *IRichEditOle) Release() uint32 {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.Release, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.Release,
+		uintptr(unsafe.Pointer(obj)))
 	return uint32(ret)
 }
 
 func (obj *IRichEditOle) GetClientSite(lplpolesite **IOleClientSite) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.GetClientSite, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetClientSite,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(unsafe.Pointer(lplpolesite)),
-		0)
+		uintptr(unsafe.Pointer(lplpolesite)))
 	return HRESULT(ret)
 }
 
 func (obj *IRichEditOle) GetObjectCount() int32 {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.GetObjectCount, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetObjectCount,
+		uintptr(unsafe.Pointer(obj)))
 	return int32(ret)
 }
 
 func (obj *IRichEditOle) GetLinkCount() int32 {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.GetLinkCount, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetLinkCount,
+		uintptr(unsafe.Pointer(obj)))
 	return int32(ret)
 }
 
 func (obj *IRichEditOle) GetObject(iob int32, lpreobject *REOBJECT, dwFlags uint32) HRESULT {
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.GetObject, 4,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetObject,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(iob),
 		uintptr(unsafe.Pointer(lpreobject)),
-		uintptr(dwFlags),
-		0,
-		0)
+		uintptr(dwFlags))
 	return HRESULT(ret)
 }
 
 func (obj *IRichEditOle) InsertObject(lpreobject *REOBJECT) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.InsertObject, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.InsertObject,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(unsafe.Pointer(lpreobject)),
-		0)
+		uintptr(unsafe.Pointer(lpreobject)))
 	return HRESULT(ret)
 }
 
 func (obj *IRichEditOle) ConvertObject(iob int32, rclsidNew REFCLSID, lpstrUserTypeNew *byte) HRESULT {
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.ConvertObject, 4,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.ConvertObject,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(iob),
 		uintptr(unsafe.Pointer(rclsidNew)),
-		uintptr(unsafe.Pointer(lpstrUserTypeNew)),
-		0,
-		0)
+		uintptr(unsafe.Pointer(lpstrUserTypeNew)))
 	return HRESULT(ret)
 }
 
 func (obj *IRichEditOle) ActivateAs(rclsid REFCLSID, rclsidAs REFCLSID) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.ActivateAs, 3,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.ActivateAs,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(unsafe.Pointer(rclsid)),
 		uintptr(unsafe.Pointer(rclsidAs)))
@@ -135,7 +122,7 @@ func (obj *IRichEditOle) ActivateAs(rclsid REFCLSID, rclsidAs REFCLSID) HRESULT 
 }
 
 func (obj *IRichEditOle) SetHostNames(lpstrContainerApp *byte, lpstrContainerObj *byte) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.SetHostNames, 3,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetHostNames,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(unsafe.Pointer(lpstrContainerApp)),
 		uintptr(unsafe.Pointer(lpstrContainerObj)))
@@ -143,7 +130,7 @@ func (obj *IRichEditOle) SetHostNames(lpstrContainerApp *byte, lpstrContainerObj
 }
 
 func (obj *IRichEditOle) SetLinkAvailable(iob int32, fAvailable BOOL) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.SetLinkAvailable, 3,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetLinkAvailable,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(iob),
 		uintptr(fAvailable))
@@ -151,7 +138,7 @@ func (obj *IRichEditOle) SetLinkAvailable(iob int32, fAvailable BOOL) HRESULT {
 }
 
 func (obj *IRichEditOle) SetDvaspect(iob int32, dvaspect uint32) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.SetDvaspect, 3,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetDvaspect,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(iob),
 		uintptr(dvaspect))
@@ -159,15 +146,14 @@ func (obj *IRichEditOle) SetDvaspect(iob int32, dvaspect uint32) HRESULT {
 }
 
 func (obj *IRichEditOle) HandsOffStorage(iob int32) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.HandsOffStorage, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.HandsOffStorage,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(iob),
-		0)
+		uintptr(iob))
 	return HRESULT(ret)
 }
 
 func (obj *IRichEditOle) SaveCompleted(iob int32, lpstg *IStorage) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.SaveCompleted, 3,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SaveCompleted,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(iob),
 		uintptr(unsafe.Pointer(lpstg)))
@@ -175,39 +161,32 @@ func (obj *IRichEditOle) SaveCompleted(iob int32, lpstg *IStorage) HRESULT {
 }
 
 func (obj *IRichEditOle) InPlaceDeactivate() HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.InPlaceDeactivate, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.InPlaceDeactivate,
+		uintptr(unsafe.Pointer(obj)))
 	return HRESULT(ret)
 }
 
 func (obj *IRichEditOle) ContextSensitiveHelp(fEnterMode BOOL) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.ContextSensitiveHelp, 2,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.ContextSensitiveHelp,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(fEnterMode),
-		0)
+		uintptr(fEnterMode))
 	return HRESULT(ret)
 }
 
 func (obj *IRichEditOle) GetClipboardData(lpchrg *CHARRANGE, reco uint32, lplpdataobj **IDataObject) HRESULT {
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.GetClipboardData, 4,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.GetClipboardData,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(unsafe.Pointer(lpchrg)),
 		uintptr(reco),
-		uintptr(unsafe.Pointer(lplpdataobj)),
-		0,
-		0)
+		uintptr(unsafe.Pointer(lplpdataobj)))
 	return HRESULT(ret)
 }
 
 func (obj *IRichEditOle) ImportDataObject(lpdataobj *IDataObject, cf CLIPFORMAT, hMetaPict HGLOBAL) HRESULT {
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.ImportDataObject, 4,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.ImportDataObject,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(unsafe.Pointer(lpdataobj)),
 		uintptr(cf),
-		uintptr(hMetaPict),
-		0,
-		0)
+		uintptr(hMetaPict))
 	return HRESULT(ret)
 }

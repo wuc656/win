@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build windows
 // +build windows
 
 package win
@@ -16,7 +17,7 @@ var (
 	IID_ITaskbarList3 = IID{0xea1afb91, 0x9e28, 0x4b86, [8]byte{0x90, 0xe9, 0x9e, 0x9f, 0x8a, 0x5e, 0xef, 0xaf}}
 )
 
-//TBPFLAG
+// TBPFLAG
 const (
 	TBPF_NOPROGRESS    = 0
 	TBPF_INDETERMINATE = 0x1
@@ -54,7 +55,7 @@ type ITaskbarList3 struct {
 }
 
 func (obj *ITaskbarList3) SetProgressState(hwnd HWND, state int) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.SetProgressState, 3,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetProgressState,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hwnd),
 		uintptr(state))
@@ -62,12 +63,10 @@ func (obj *ITaskbarList3) SetProgressState(hwnd HWND, state int) HRESULT {
 }
 
 func (obj *ITaskbarList3) SetOverlayIcon(hwnd HWND, icon HICON, description *uint16) HRESULT {
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.SetOverlayIcon, 4,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetOverlayIcon,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hwnd),
 		uintptr(icon),
-		uintptr(unsafe.Pointer(description)),
-		0,
-		0)
+		uintptr(unsafe.Pointer(description)))
 	return HRESULT(ret)
 }

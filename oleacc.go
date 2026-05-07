@@ -204,7 +204,7 @@ type IAccPropServices struct {
 }
 
 func (obj *IAccPropServices) QueryInterface(riid REFIID, ppvObject *unsafe.Pointer) HRESULT {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.QueryInterface, 3,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.QueryInterface,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(unsafe.Pointer(riid)),
 		uintptr(unsafe.Pointer(ppvObject)))
@@ -212,18 +212,14 @@ func (obj *IAccPropServices) QueryInterface(riid REFIID, ppvObject *unsafe.Point
 }
 
 func (obj *IAccPropServices) AddRef() uint32 {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.AddRef, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.AddRef,
+		uintptr(unsafe.Pointer(obj)))
 	return uint32(ret)
 }
 
 func (obj *IAccPropServices) Release() uint32 {
-	ret, _, _ := syscall.Syscall(obj.LpVtbl.Release, 1,
-		uintptr(unsafe.Pointer(obj)),
-		0,
-		0)
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.Release,
+		uintptr(unsafe.Pointer(obj)))
 	return uint32(ret)
 }
 
@@ -240,16 +236,14 @@ func (obj *IAccPropServices) SetPropServer(idString []byte, idProps []MSAAPROPID
 	if idPropsLen != 0 {
 		idPropsPtr = unsafe.Pointer(&idProps[0])
 	}
-	ret, _, _ := syscall.Syscall9(obj.LpVtbl.SetPropServer, 7,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetPropServer,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(idStringPtr),
 		uintptr(idStringLen),
 		uintptr(idPropsPtr),
 		uintptr(idPropsLen),
 		uintptr(unsafe.Pointer(server)),
-		uintptr(annoScope),
-		0,
-		0)
+		uintptr(annoScope))
 	return HRESULT(ret)
 }
 
@@ -266,13 +260,12 @@ func (obj *IAccPropServices) ClearProps(idString []byte, idProps []MSAAPROPID) H
 	if idPropsLen != 0 {
 		idPropsPtr = unsafe.Pointer(&idProps[0])
 	}
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.ClearProps, 5,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.ClearProps,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(idStringPtr),
 		uintptr(idStringLen),
 		uintptr(idPropsPtr),
-		uintptr(idPropsLen),
-		0)
+		uintptr(idPropsLen))
 	return HRESULT(ret)
 }
 
@@ -283,7 +276,7 @@ func (obj *IAccPropServices) SetHwndPropServer(hwnd HWND, idObject int32, idChil
 	if idPropsLen != 0 {
 		idPropsPtr = unsafe.Pointer(&idProps[0])
 	}
-	ret, _, _ := syscall.Syscall9(obj.LpVtbl.SetHwndPropServer, 8,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetHwndPropServer,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hwnd),
 		uintptr(idObject),
@@ -291,8 +284,7 @@ func (obj *IAccPropServices) SetHwndPropServer(hwnd HWND, idObject int32, idChil
 		uintptr(idPropsPtr),
 		uintptr(idPropsLen),
 		uintptr(unsafe.Pointer(server)),
-		uintptr(annoScope),
-		0)
+		uintptr(annoScope))
 	return HRESULT(ret)
 }
 
@@ -303,7 +295,7 @@ func (obj *IAccPropServices) ClearHwndProps(hwnd HWND, idObject int32, idChild u
 	if idPropsLen != 0 {
 		idPropsPtr = unsafe.Pointer(&idProps[0])
 	}
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.ClearHwndProps, 6,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.ClearHwndProps,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hwnd),
 		uintptr(idObject),
@@ -317,7 +309,7 @@ func (obj *IAccPropServices) ClearHwndProps(hwnd HWND, idObject int32, idChild u
 func (obj *IAccPropServices) ComposeHwndIdentityString(hwnd HWND, idObject int32, idChild uint32) (hr HRESULT, idString []byte) {
 	var data *[1<<31 - 1]byte
 	var len uint32
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.ComposeHwndIdentityString, 6,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.ComposeHwndIdentityString,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hwnd),
 		uintptr(idObject),
@@ -341,7 +333,7 @@ func (obj *IAccPropServices) DecomposeHwndIdentityString(idString []byte) (hr HR
 	if idStringLen != 0 {
 		idStringPtr = unsafe.Pointer(&idString[0])
 	}
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.DecomposeHwndIdentityString, 6,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.DecomposeHwndIdentityString,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(idStringPtr),
 		uintptr(idStringLen),
@@ -359,16 +351,14 @@ func (obj *IAccPropServices) SetHmenuPropServer(hmenu HMENU, idChild uint32, idP
 	if idPropsLen != 0 {
 		idPropsPtr = unsafe.Pointer(&idProps[0])
 	}
-	ret, _, _ := syscall.Syscall9(obj.LpVtbl.SetHmenuPropServer, 7,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetHmenuPropServer,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hmenu),
 		uintptr(idChild),
 		uintptr(idPropsPtr),
 		uintptr(idPropsLen),
 		uintptr(unsafe.Pointer(server)),
-		uintptr(annoScope),
-		0,
-		0)
+		uintptr(annoScope))
 	return HRESULT(ret)
 }
 
@@ -379,13 +369,12 @@ func (obj *IAccPropServices) ClearHmenuProps(hmenu HMENU, idChild uint32, idProp
 	if idPropsLen != 0 {
 		idPropsPtr = unsafe.Pointer(&idProps[0])
 	}
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.ClearHmenuProps, 5,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.ClearHmenuProps,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hmenu),
 		uintptr(idChild),
 		uintptr(idPropsPtr),
-		uintptr(idPropsLen),
-		0)
+		uintptr(idPropsLen))
 	return HRESULT(ret)
 }
 
@@ -393,13 +382,12 @@ func (obj *IAccPropServices) ClearHmenuProps(hmenu HMENU, idChild uint32, idProp
 func (obj *IAccPropServices) ComposeHmenuIdentityString(hmenu HMENU, idChild uint32) (hr HRESULT, idString []byte) {
 	var data *[1<<31 - 1]byte
 	var len uint32
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.ComposeHmenuIdentityString, 5,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.ComposeHmenuIdentityString,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hmenu),
 		uintptr(idChild),
 		uintptr(unsafe.Pointer(&data)),
-		uintptr(unsafe.Pointer(&len)),
-		0)
+		uintptr(unsafe.Pointer(&len)))
 	hr = HRESULT(ret)
 	if FAILED(hr) {
 		return
@@ -417,13 +405,12 @@ func (obj *IAccPropServices) DecomposeHmenuIdentityString(idString []byte) (hr H
 	if idStringLen != 0 {
 		idStringPtr = unsafe.Pointer(&idString[0])
 	}
-	ret, _, _ := syscall.Syscall6(obj.LpVtbl.DecomposeHmenuIdentityString, 5,
+	ret, _, _ := syscall.SyscallN(obj.LpVtbl.DecomposeHmenuIdentityString,
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(idStringPtr),
 		uintptr(idStringLen),
 		uintptr(unsafe.Pointer(&hmenu)),
-		uintptr(unsafe.Pointer(&idChild)),
-		0)
+		uintptr(unsafe.Pointer(&idChild)))
 	hr = HRESULT(ret)
 	return
 }
