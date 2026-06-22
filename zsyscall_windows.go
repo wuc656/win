@@ -114,6 +114,8 @@ var (
 	procCreateDialogIndirectParamW            = moduser32.NewProc("CreateDialogIndirectParamW")
 	procDefDlgProcW                           = moduser32.NewProc("DefDlgProcW")
 	procFlashWindowEx                         = moduser32.NewProc("FlashWindowEx")
+	procGetDoubleClickTime                    = moduser32.NewProc("GetDoubleClickTime")
+	procGetMessageTime                        = moduser32.NewProc("GetMessageTime")
 	procGetNextDlgTabItem                     = moduser32.NewProc("GetNextDlgTabItem")
 	procGetQueueStatus                        = moduser32.NewProc("GetQueueStatus")
 	procGetWindowTextLengthW                  = moduser32.NewProc("GetWindowTextLengthW")
@@ -547,6 +549,18 @@ func DefDlgProc(hdlg HWND, msg uint32, wParam uintptr, lParam uintptr) (ret uint
 func FlashWindowEx(pfwi *FLASHWINFO) (ret bool) {
 	r0, _, _ := syscall.SyscallN(procFlashWindowEx.Addr(), uintptr(unsafe.Pointer(pfwi)))
 	ret = r0 != 0
+	return
+}
+
+func GetDoubleClickTime() (ret uint32) {
+	r0, _, _ := syscall.SyscallN(procGetDoubleClickTime.Addr())
+	ret = uint32(r0)
+	return
+}
+
+func GetMessageTime() (ret int32) {
+	r0, _, _ := syscall.SyscallN(procGetMessageTime.Addr())
+	ret = int32(r0)
 	return
 }
 
