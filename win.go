@@ -8,7 +8,6 @@
 package win
 
 import (
-	"math"
 	"unsafe"
 
 	"golang.org/x/exp/constraints"
@@ -78,10 +77,7 @@ func UTF16PtrToString(s *uint16) string {
 }
 
 func MAKEINTRESOURCE[ID constraints.Integer](id ID) *uint16 {
-	if id < 0 || int64(id) > math.MaxUint16 {
-		panic("resource id out of uint16 range")
-	}
-	return (*uint16)(unsafe.Pointer(uintptr(id)))
+	return (*uint16)(unsafe.Pointer(uintptr(uint16(id))))
 }
 
 func MAKEINTATOM(atom ATOM) *uint16 {
