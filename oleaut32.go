@@ -215,10 +215,7 @@ func VariantBSTRToString(value *VAR_BSTR) string {
 }
 
 func (v *VARIANT) MustLong() int32 {
-	value, err := v.Long()
-	if err != nil {
-		panic(err)
-	}
+	value, _ := v.Long()
 	return value
 }
 
@@ -237,10 +234,7 @@ func (v *VARIANT) SetLong(value int32) {
 }
 
 func (v *VARIANT) MustULong() uint32 {
-	value, err := v.ULong()
-	if err != nil {
-		panic(err)
-	}
+	value, _ := v.ULong()
 	return value
 }
 
@@ -259,10 +253,7 @@ func (v *VARIANT) SetULong(value uint32) {
 }
 
 func (v *VARIANT) MustBool() VARIANT_BOOL {
-	value, err := v.Bool()
-	if err != nil {
-		panic(err)
-	}
+	value, _ := v.Bool()
 	return value
 }
 
@@ -281,10 +272,7 @@ func (v *VARIANT) SetBool(value VARIANT_BOOL) {
 }
 
 func (v *VARIANT) MustBSTR() *uint16 {
-	value, err := v.BSTR()
-	if err != nil {
-		panic(err)
-	}
+	value, _ := v.BSTR()
 	return value
 }
 
@@ -303,10 +291,7 @@ func (v *VARIANT) SetBSTR(value *uint16) {
 }
 
 func (v *VARIANT) MustPDispatch() *IDispatch {
-	value, err := v.PDispatch()
-	if err != nil {
-		panic(err)
-	}
+	value, _ := v.PDispatch()
 	return value
 }
 
@@ -325,10 +310,7 @@ func (v *VARIANT) SetPDispatch(value *IDispatch) {
 }
 
 func (v *VARIANT) MustPVariant() *VARIANT {
-	value, err := v.PVariant()
-	if err != nil {
-		panic(err)
-	}
+	value, _ := v.PVariant()
 	return value
 }
 
@@ -347,10 +329,7 @@ func (v *VARIANT) SetPVariant(value *VARIANT) {
 }
 
 func (v *VARIANT) MustPBool() *VARIANT_BOOL {
-	value, err := v.PBool()
-	if err != nil {
-		panic(err)
-	}
+	value, _ := v.PBool()
 	return value
 }
 
@@ -369,10 +348,7 @@ func (v *VARIANT) SetPBool(value *VARIANT_BOOL) {
 }
 
 func (v *VARIANT) MustPPDispatch() **IDispatch {
-	value, err := v.PPDispatch()
-	if err != nil {
-		panic(err)
-	}
+	value, _ := v.PPDispatch()
 	return value
 }
 
@@ -391,10 +367,7 @@ func (v *VARIANT) SetPPDispatch(value **IDispatch) {
 }
 
 func (v *VARIANT) MustPSafeArray() *SAFEARRAY {
-	value, err := v.PSafeArray()
-	if err != nil {
-		panic(err)
-	}
+	value, _ := v.PSafeArray()
 	return value
 }
 
