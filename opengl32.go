@@ -3,11 +3,11 @@
 // license that can be found in the LICENSE file.
 
 //go:build windows
-// +build windows
 
 package win
 
 import (
+	"math"
 	"syscall"
 	"unsafe"
 
@@ -270,8 +270,8 @@ func WglUseFontOutlines(hdc HDC, first, count, listbase uint32, deviation, extru
 		uintptr(first),
 		uintptr(count),
 		uintptr(listbase),
-		uintptr(deviation),
-		uintptr(extrusion),
+		uintptr(math.Float32bits(deviation)),
+		uintptr(math.Float32bits(extrusion)),
 		uintptr(format),
 		uintptr(unsafe.Pointer(pgmf)))
 

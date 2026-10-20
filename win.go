@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build windows
-// +build windows
 
 package win
 
@@ -11,9 +10,13 @@ import (
 	"math"
 	"unsafe"
 
-	"golang.org/x/exp/constraints"
 	"golang.org/x/sys/windows"
 )
+
+type integer interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64 |
+		~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
+}
 
 const (
 	S_OK           = 0x00000000
@@ -77,7 +80,7 @@ func UTF16PtrToString(s *uint16) string {
 	return windows.UTF16PtrToString(s)
 }
 
-func MAKEINTRESOURCE[ID constraints.Integer](id ID) *uint16 {
+func MAKEINTRESOURCE[ID integer](id ID) *uint16 {
 	if id < 0 || int64(id) > math.MaxUint16 {
 		panic("resource id out of uint16 range")
 	}

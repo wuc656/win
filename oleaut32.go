@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build windows
-// +build windows
 
 package win
 
@@ -440,8 +439,12 @@ func init() {
 }
 
 func SysAllocString(s string) *uint16 /*BSTR*/ {
+	p, err := windows.UTF16PtrFromString(s)
+	if err != nil {
+		return nil
+	}
 	ret, _, _ := syscall.SyscallN(sysAllocString.Addr(),
-		uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(s))))
+		uintptr(unsafe.Pointer(p)))
 
 	return (*uint16) /*BSTR*/ (unsafe.Pointer(ret))
 }

@@ -3,11 +3,11 @@
 // license that can be found in the LICENSE file.
 
 //go:build windows
-// +build windows
 
 package win
 
 import (
+	"math"
 	"syscall"
 	"unsafe"
 )
@@ -870,7 +870,7 @@ func (obj *ITextDocument) GetDefaultTabStop(pValue *float32) HRESULT {
 func (obj *ITextDocument) SetDefaultTabStop(Value float32) HRESULT {
 	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetDefaultTabStop,
 		uintptr(unsafe.Pointer(obj)),
-		uintptr(Value))
+		uintptr(math.Float32bits(Value)))
 	return HRESULT(ret)
 }
 

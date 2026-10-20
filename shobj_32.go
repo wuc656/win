@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// +build windows,386 windows,arm
+//go:build windows && 386
 
 package win
 
@@ -16,7 +16,10 @@ func (obj *ITaskbarList3) SetProgressValue(hwnd HWND, current uint32, length uin
 		uintptr(unsafe.Pointer(obj)),
 		uintptr(hwnd),
 		uintptr(current),
-		uintptr(length))
+		0,
+		uintptr(length),
+		0)
 
 	return HRESULT(ret)
 }
+

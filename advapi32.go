@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build windows
-// +build windows
 
 package win
 
@@ -38,12 +37,9 @@ type (
 )
 
 const (
-	REG_NONE uint64 = 0 // No value type
-	// REG_SZ               = 1 // Unicode nul terminated string
-	REG_SZ uint64 = 1 // Unicode nul terminated string
-	// REG_EXPAND_SZ        = 2 // Unicode nul terminated string
-	REG_EXPAND_SZ uint64 = 2 // Unicode nul terminated string
-	// (with environment variable references)
+	REG_NONE                       = 0 // No value type
+	REG_SZ                         = 1 // Unicode nul terminated string
+	REG_EXPAND_SZ                  = 2 // Unicode nul terminated string (with environment variable references)
 	REG_BINARY                     = 3 // Free form binary
 	REG_DWORD                      = 4 // 32-bit number
 	REG_DWORD_LITTLE_ENDIAN        = 4 // 32-bit number (same as REG_DWORD)
@@ -55,7 +51,6 @@ const (
 	REG_RESOURCE_REQUIREMENTS_LIST = 10
 	REG_QWORD                      = 11 // 64-bit number
 	REG_QWORD_LITTLE_ENDIAN        = 11 // 64-bit number (same as REG_QWORD)
-
 )
 
 var (
@@ -125,7 +120,7 @@ func RegEnumValue(hKey HKEY, index uint32, lpValueName *uint16, lpcchValueName *
 	return int32(ret)
 }
 
-func RegSetValueEx(hKey HKEY, lpValueName *uint16, lpReserved, lpDataType uint64, lpData *byte, cbData uint32) int32 {
+func RegSetValueEx(hKey HKEY, lpValueName *uint16, lpReserved, lpDataType uint32, lpData *byte, cbData uint32) int32 {
 	ret, _, _ := syscall.SyscallN(regSetValueEx.Addr(),
 		uintptr(hKey),
 		uintptr(unsafe.Pointer(lpValueName)),

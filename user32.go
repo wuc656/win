@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build windows
-// +build windows
 
 package win
 
@@ -1811,6 +1810,8 @@ func GET_Y_LPARAM(lp uintptr) int32 {
 }
 
 var (
+	is64bit = unsafe.Sizeof(uintptr(0)) == 8
+
 	// Library
 	libuser32 *windows.LazyDLL
 
@@ -1961,8 +1962,6 @@ var (
 )
 
 func init() {
-	is64bit := unsafe.Sizeof(uintptr(0)) == 8
-
 	// Library
 	libuser32 = windows.NewLazySystemDLL("user32.dll")
 
@@ -2042,7 +2041,7 @@ func init() {
 	if is64bit {
 		getWindowLongPtr = libuser32.NewProc("GetWindowLongPtrW")
 	} else {
-		getWindowLongPtr = libuser32.NewProc("GetWindowLongW")
+		getWindowLongPtr = getWindowLong
 	}
 	getWindowPlacement = libuser32.NewProc("GetWindowPlacement")
 	getWindowRect = libuser32.NewProc("GetWindowRect")
@@ -2105,7 +2104,7 @@ func init() {
 	if is64bit {
 		setWindowLongPtr = libuser32.NewProc("SetWindowLongPtrW")
 	} else {
-		setWindowLongPtr = libuser32.NewProc("SetWindowLongW")
+		setWindowLongPtr = setWindowLong
 	}
 	setWindowPlacement = libuser32.NewProc("SetWindowPlacement")
 	setWindowPos = libuser32.NewProc("SetWindowPos")
@@ -3372,6 +3371,13 @@ func WindowFromDC(hDC HDC) HWND {
 }
 
 func WindowFromPoint(Point POINT) HWND {
+	if is64bit {
+		ret, _, _ := syscall.SyscallN(windowFromPoint.Addr(),
+			*(*uintptr)(unsafe.Pointer(&Point)))
+
+		return HWND(ret)
+	}
+
 	ret, _, _ := syscall.SyscallN(windowFromPoint.Addr(),
 		uintptr(Point.X),
 		uintptr(Point.Y))

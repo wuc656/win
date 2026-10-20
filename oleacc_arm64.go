@@ -3,13 +3,14 @@
 // license that can be found in the LICENSE file.
 
 //go:build windows && arm64
-// +build windows,arm64
 
 package win
 
 import (
 	"syscall"
 	"unsafe"
+
+	"golang.org/x/sys/windows"
 )
 
 func (idProp *MSAAPROPID) split() (uintptr, uintptr) {
@@ -53,7 +54,7 @@ func (obj *IAccPropServices) SetHwndProp(hwnd HWND, idObject int32, idChild uint
 
 // SetHwndPropStr wraps SetPropValue, providing a more convenient entry point for callers who are annotating HWND-based accessible elements.
 func (obj *IAccPropServices) SetHwndPropStr(hwnd HWND, idObject int32, idChild uint32, idProp *MSAAPROPID, str string) HRESULT {
-	str16, err := syscall.UTF16PtrFromString(str)
+	str16, err := windows.UTF16PtrFromString(str)
 	if err != nil {
 		return -((E_INVALIDARG ^ 0xFFFFFFFF) + 1)
 	}
@@ -82,7 +83,7 @@ func (obj *IAccPropServices) SetHmenuProp(hmenu HMENU, idChild uint32, idProp *M
 
 // SetHmenuPropStr wraps SetPropValue, providing a more convenient entry point for callers who are annotating HMENU-based accessible elements.
 func (obj *IAccPropServices) SetHmenuPropStr(hmenu HMENU, idChild uint32, idProp *MSAAPROPID, str string) HRESULT {
-	str16, err := syscall.UTF16PtrFromString(str)
+	str16, err := windows.UTF16PtrFromString(str)
 	if err != nil {
 		return -((E_INVALIDARG ^ 0xFFFFFFFF) + 1)
 	}
