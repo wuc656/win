@@ -56,7 +56,7 @@ func (obj *IAccPropServices) SetHwndProp(hwnd HWND, idObject int32, idChild uint
 func (obj *IAccPropServices) SetHwndPropStr(hwnd HWND, idObject int32, idChild uint32, idProp *MSAAPROPID, str string) HRESULT {
 	str16, err := windows.UTF16PtrFromString(str)
 	if err != nil {
-		return E_INVALIDARG
+		return HRESULT(E_INVALIDARG - 0x100000000)
 	}
 	propA, propB, propC, propD := idProp.split()
 	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetHwndPropStr,
@@ -85,7 +85,7 @@ func (obj *IAccPropServices) SetHmenuProp(hmenu HMENU, idChild uint32, idProp *M
 func (obj *IAccPropServices) SetHmenuPropStr(hmenu HMENU, idChild uint32, idProp *MSAAPROPID, str string) HRESULT {
 	str16, err := windows.UTF16PtrFromString(str)
 	if err != nil {
-		return E_INVALIDARG
+		return HRESULT(E_INVALIDARG - 0x100000000)
 	}
 	propA, propB, propC, propD := idProp.split()
 	ret, _, _ := syscall.SyscallN(obj.LpVtbl.SetHmenuPropStr,

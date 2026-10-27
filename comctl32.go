@@ -357,7 +357,7 @@ func InitCommonControlsEx(lpInitCtrls *INITCOMMONCONTROLSEX) bool {
 
 func LoadIconMetric(hInstance HINSTANCE, lpIconName *uint16, lims int32, hicon *HICON) HRESULT {
 	if loadIconMetric.Find() != nil {
-		return E_NOTIMPL
+		return HRESULT(E_NOTIMPL - 0x100000000)
 	}
 	ret, _, _ := syscall.SyscallN(loadIconMetric.Addr(),
 		uintptr(hInstance),
@@ -370,7 +370,7 @@ func LoadIconMetric(hInstance HINSTANCE, lpIconName *uint16, lims int32, hicon *
 
 func LoadIconWithScaleDown(hInstance HINSTANCE, lpIconName *uint16, w int32, h int32, hicon *HICON) HRESULT {
 	if loadIconWithScaleDown.Find() != nil {
-		return E_NOTIMPL
+		return HRESULT(E_NOTIMPL - 0x100000000)
 	}
 	ret, _, _ := syscall.SyscallN(loadIconWithScaleDown.Addr(),
 		uintptr(hInstance),

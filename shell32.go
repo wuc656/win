@@ -493,7 +493,7 @@ func SHParseDisplayName(pszName *uint16, pbc uintptr, ppidl *uintptr, sfgaoIn ui
 
 func SHGetStockIconInfo(stockIconId int32, uFlags uint32, stockIcon *SHSTOCKICONINFO) HRESULT {
 	if shGetStockIconInfo.Find() != nil {
-		return E_NOTIMPL
+		return HRESULT(E_NOTIMPL - 0x100000000)
 	}
 	ret, _, _ := syscall.SyscallN(shGetStockIconInfo.Addr(),
 		uintptr(stockIconId),
