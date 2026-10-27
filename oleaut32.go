@@ -179,13 +179,10 @@ func StringToBSTR(value string) *uint16 /*BSTR*/ {
 }
 
 func BSTRToString(value *uint16 /*BSTR*/) string {
-	// ISSUE: Is this really ok?
-	bstrArrPtr := (*[200000000]uint16)(unsafe.Pointer(value))
-
-	bstrSlice := make([]uint16, SysStringLen(value))
-	copy(bstrSlice, bstrArrPtr[:])
-
-	return syscall.UTF16ToString(bstrSlice)
+	if value == nil {
+		return ""
+	}
+	return windows.UTF16ToString(unsafe.Slice(value, SysStringLen(value)))
 }
 
 func IntToVariantI4(value int32) *VAR_I4 {

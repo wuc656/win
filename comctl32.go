@@ -9,8 +9,6 @@ package win
 import (
 	"bytes"
 	"encoding/binary"
-	"fmt"
-	"reflect"
 	"syscall"
 	"unsafe"
 
@@ -359,7 +357,7 @@ func InitCommonControlsEx(lpInitCtrls *INITCOMMONCONTROLSEX) bool {
 
 func LoadIconMetric(hInstance HINSTANCE, lpIconName *uint16, lims int32, hicon *HICON) HRESULT {
 	if loadIconMetric.Find() != nil {
-		return HRESULT(0)
+		return E_NOTIMPL
 	}
 	ret, _, _ := syscall.SyscallN(loadIconMetric.Addr(),
 		uintptr(hInstance),
@@ -372,7 +370,7 @@ func LoadIconMetric(hInstance HINSTANCE, lpIconName *uint16, lims int32, hicon *
 
 func LoadIconWithScaleDown(hInstance HINSTANCE, lpIconName *uint16, w int32, h int32, hicon *HICON) HRESULT {
 	if loadIconWithScaleDown.Find() != nil {
-		return HRESULT(0)
+		return E_NOTIMPL
 	}
 	ret, _, _ := syscall.SyscallN(loadIconWithScaleDown.Addr(),
 		uintptr(hInstance),
@@ -536,37 +534,9 @@ type TASKDIALOGCONFIG struct {
 // Pack takes the contents of u and writes them in a packed format to a
 // TASKDIALOGCONFIG, which is returned as the result.
 func (u *TASKDIALOGCONFIG_UNPACKED) Pack() *TASKDIALOGCONFIG {
-	buf := bytes.NewBuffer(make([]byte, 0, sizeTASKDIALOGCONFIG))
-
-	v := reflect.ValueOf(u).Elem()
-
-	// Write the actual packed size as the cbSize field.
-	binary.Write(buf, packByteOrder, uint32(sizeTASKDIALOGCONFIG))
-
-	for i, n := 0, v.NumField(); i < n; i++ {
-		fv := v.Field(i)
-		switch fv.Type().Kind() {
-		case reflect.Pointer:
-			if err := binary.Write(buf, packByteOrder, packPtr(uintptr(fv.UnsafePointer()))); err != nil {
-				panic(err)
-			}
-		case reflect.Uintptr:
-			if err := binary.Write(buf, packByteOrder, packPtr(fv.Uint())); err != nil {
-				panic(err)
-			}
-		default:
-			if err := binary.Write(buf, packByteOrder, fv.Interface()); err != nil {
-				panic(err)
-			}
-		}
-	}
-
-	bb := buf.Bytes()
-	if len(bb) != sizeTASKDIALOGCONFIG {
-		panic(fmt.Sprintf("(*TASKDIALOGCONFIG_UNPACKED).Pack() invalid size: got %d, want %d", len(bb), sizeTASKDIALOGCONFIG))
-	}
-
-	return (*TASKDIALOGCONFIG)(unsafe.Pointer(&bb[0]))
+	var cfg TASKDIALOGCONFIG
+	u.packPlatform((*[sizeTASKDIALOGCONFIG]byte)(unsafe.Pointer(&cfg)))
+	return &cfg
 }
 
 //sys TaskDialogIndirect(pTaskConfig *TASKDIALOGCONFIG, pnButton *int32, pnRadioButton *int32, pfVerificationFlagChecked *BOOL) (ret HRESULT) = comctl32.TaskDialogIndirect

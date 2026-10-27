@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build windows
+
 package win
 
 //go:generate go run golang.org/x/sys/windows/mkwinsyscall -output zsyscall_windows.go comctl32.go dwmapi.go gdiplus.go kernel32.go shcore.go user32.go uxtheme.go

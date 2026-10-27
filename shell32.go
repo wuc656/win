@@ -493,7 +493,7 @@ func SHParseDisplayName(pszName *uint16, pbc uintptr, ppidl *uintptr, sfgaoIn ui
 
 func SHGetStockIconInfo(stockIconId int32, uFlags uint32, stockIcon *SHSTOCKICONINFO) HRESULT {
 	if shGetStockIconInfo.Find() != nil {
-		return HRESULT(0)
+		return E_NOTIMPL
 	}
 	ret, _, _ := syscall.SyscallN(shGetStockIconInfo.Addr(),
 		uintptr(stockIconId),
@@ -510,7 +510,7 @@ func ShellExecute(hWnd HWND, verb *uint16, file *uint16, args *uint16, cwd *uint
 		uintptr(unsafe.Pointer(args)),
 		uintptr(unsafe.Pointer(cwd)),
 		uintptr(showCmd))
-	return ret != 0
+	return ret > 32
 }
 
 func Shell_NotifyIcon(dwMessage uint32, lpdata *NOTIFYICONDATA) bool {

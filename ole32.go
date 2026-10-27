@@ -82,24 +82,7 @@ var (
 )
 
 func EqualREFIID(a, b REFIID) bool {
-	if a == b {
-		return true
-	}
-	if a == nil || b == nil {
-		return false
-	}
-
-	if a.Data1 != b.Data1 || a.Data2 != b.Data2 || a.Data3 != b.Data3 {
-		return false
-	}
-
-	for i := range 8 {
-		if a.Data4[i] != b.Data4[i] {
-			return false
-		}
-	}
-
-	return true
+	return a == b || (a != nil && b != nil && *a == *b)
 }
 
 type IClassFactoryVtbl struct {

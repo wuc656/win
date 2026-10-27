@@ -242,9 +242,10 @@ func GetCurrentThreadId() uint32 {
 }
 
 func GetLastError() uint32 {
-	ret, _, _ := syscall.SyscallN(getLastError.Addr())
-
-	return uint32(ret)
+	if errno, ok := windows.GetLastError().(syscall.Errno); ok {
+		return uint32(errno)
+	}
+	return 0
 }
 
 func GetLocaleInfo(Locale LCID, LCType LCTYPE, lpLCData *uint16, cchData int32) int32 {
