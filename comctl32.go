@@ -8,7 +8,6 @@ package win
 
 import (
 	"bytes"
-	"encoding/binary"
 	"syscall"
 	"unsafe"
 
@@ -455,10 +454,10 @@ type TASKDIALOG_BUTTON struct {
 // Pack writes the contents of u to buf in a packed format. We use a Buffer
 // because walk encodes TASKDIALOG_BUTTONs from a slice.
 func (u *TASKDIALOG_BUTTON_UNPACKED) Pack(buf *bytes.Buffer) error {
-	if err := binary.Write(buf, packByteOrder, u.ButtonID); err != nil {
-		return err
-	}
-	return binary.Write(buf, packByteOrder, packPtr(uintptr(unsafe.Pointer(u.ButtonText))))
+	var b [sizeTASKDIALOG_BUTTON]byte
+	u.packPlatform(&b)
+	_, err := buf.Write(b[:])
+	return err
 }
 
 type TASKDIALOG_ELEMENTS int32

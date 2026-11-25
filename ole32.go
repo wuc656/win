@@ -145,6 +145,14 @@ func (cp *IConnectionPoint) Advise(pUnkSink unsafe.Pointer, pdwCookie *uint32) H
 	return HRESULT(ret)
 }
 
+func (cp *IConnectionPoint) Unadvise(dwCookie uint32) HRESULT {
+	ret, _, _ := syscall.SyscallN(cp.LpVtbl.Unadvise,
+		uintptr(unsafe.Pointer(cp)),
+		uintptr(dwCookie))
+
+	return HRESULT(ret)
+}
+
 type IConnectionPointContainerVtbl struct {
 	QueryInterface       uintptr
 	AddRef               uintptr

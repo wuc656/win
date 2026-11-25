@@ -1246,7 +1246,7 @@ func AlphaBlend(hdcDest HDC, nXOriginDest, nYOriginDest, nWidthDest, nHeightDest
 		uintptr(nYOriginSrc),
 		uintptr(nWidthSrc),
 		uintptr(nHeightSrc),
-		uintptr(*(*uint32)(unsafe.Pointer(uintptr(unsafe.Pointer(&ftn))))))
+		uintptr(*(*uint32)(unsafe.Pointer(&ftn))))
 
 	return ret != 0
 }

@@ -15,9 +15,12 @@ const (
 	sizeTASKDIALOG_BUTTON = 8
 )
 
-type packPtr uint32
-
 var packByteOrder = binary.LittleEndian
+
+func (u *TASKDIALOG_BUTTON_UNPACKED) packPlatform(b *[sizeTASKDIALOG_BUTTON]byte) {
+	packByteOrder.PutUint32(b[0:4], uint32(u.ButtonID))
+	packByteOrder.PutUint32(b[4:8], uint32(uintptr(unsafe.Pointer(u.ButtonText))))
+}
 
 func (u *TASKDIALOGCONFIG_UNPACKED) packPlatform(b *[sizeTASKDIALOGCONFIG]byte) {
 	packByteOrder.PutUint32(b[0:4], uint32(sizeTASKDIALOGCONFIG))

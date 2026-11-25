@@ -194,7 +194,11 @@ func VariantI4ToInt(value *VAR_I4) int32 {
 }
 
 func BoolToVariantBool(value bool) *VAR_BOOL {
-	return &VAR_BOOL{vt: VT_BOOL, boolVal: VARIANT_BOOL(BoolToBOOL(value))}
+	b := VARIANT_FALSE
+	if value {
+		b = VARIANT_TRUE
+	}
+	return &VAR_BOOL{vt: VT_BOOL, boolVal: b}
 }
 
 func VariantBoolToBool(value *VAR_BOOL) bool {

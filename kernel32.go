@@ -357,7 +357,7 @@ func GlobalUnlock(hMem HGLOBAL) bool {
 
 func MoveMemory(destination, source unsafe.Pointer, length uintptr) {
 	syscall.SyscallN(moveMemory.Addr(),
-		uintptr(unsafe.Pointer(destination)),
+		uintptr(destination),
 		uintptr(source),
 		uintptr(length))
 }
